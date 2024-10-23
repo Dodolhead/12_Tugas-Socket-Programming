@@ -5,7 +5,6 @@ client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 server_ip = input("Masukkan IP: ")
 server_port = int(input("Masukkan Port: "))
-client.bind((server_ip, server_port))
 print(f"Client started at {server_ip}:{server_port}")
 message_log_file = "client_messages.txt"
 
@@ -15,7 +14,7 @@ class Client:
 
     def write_to_file(self, message):
         with open(message_log_file, "a") as f:
-            f.write(message + "\n")
+            f.write(message.strip() + "\n")
 
     def receive(self):
         while True:
@@ -34,7 +33,7 @@ class Client:
         is_authenticated = False
         while not is_authenticated:
             password = input("Enter password: ")
-            client.sendto(f"CheckPass:{password}".encode(), (server_ip, 9999))
+            client.sendto(f"CheckPass:{password}".encode(), (server_ip, server_port))
             response, _ = client.recvfrom(1024) 
             if response.decode() == "Password accepted.":
                 is_authenticated = True
@@ -45,7 +44,7 @@ class Client:
         is_taken = True
         while is_taken:
             name = input("Nickname: ")
-            client.sendto(f"CheckName:{name}".encode(), (server_ip, 9999))
+            client.sendto(f"CheckName:{name}".encode(), (server_ip, server_port))
             response, _ = client.recvfrom(1024)
 
             if response.decode() == "Nickname has been set.":
@@ -61,11 +60,11 @@ name = client_instance.set_nickname()
 t = threading.Thread(target=client_instance.receive)
 t.start()
 
-client.sendto(f"Joined:{name}".encode(), (server_ip, 9999))
+client.sendto(f"Joined:{name}".encode(), (server_ip, server_port))
 
 while True:
     message = input("")
     if message == "!q":
         exit()
     else:
-        client.sendto(f"{name}: {message}".encode(), (server_ip, 9999))
+        client.sendto(f"{name}: {message}".encode(), (server_ip, server_port))
