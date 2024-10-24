@@ -105,7 +105,7 @@ def send_encrypted_message():
         try:
         
             encrypted_message = encrypt(8, message, 65537) 
-            encrypted_message_str = ' '.join(map(str, encrypted_message))
+            encrypted_message_str = ''.join(map(str, encrypted_message))
             client.sendto(f"{client_instance.name}(Encrypted): {encrypted_message_str}".encode(), (client_instance.server_ip, client_instance.server_port))
         except Exception as e:
             print(f"Error encrypting message: {e}")

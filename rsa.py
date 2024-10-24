@@ -72,9 +72,8 @@ def generate_keys(length,e):
 def encrypt(length,message,e):
     n,p,q = generate_keys(length,e)
     plaintext = divideString(message)
-    ciphertext = []
+    ciphertext = ""
     for x in range(len(divideString(message))):
         hasil = (plaintext[x]**e)%n
-        ciphertext.append(hasil)
+        ciphertext += str(hasil)
     return ciphertext
-
