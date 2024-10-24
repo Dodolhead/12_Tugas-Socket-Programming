@@ -61,7 +61,6 @@ class Server:
                     index = clients.index(addr)
                     nicknames[index] = name
 
-                    # Send previous messages to the newly joined user
                     previous_messages = self.load_messages()
                     for line in previous_messages:
                         self.server_socket.sendto(line.encode(), addr)
@@ -76,7 +75,7 @@ class Server:
                     if pw != password:
                         self.server_socket.sendto("Incorrect password. Try again".encode(), addr)
                     else:
-                        with self.lock:  # Lock access to clients
+                        with self.lock: 
                             if addr not in clients:
                                 clients.append(addr)
                         self.server_socket.sendto("Password accepted.".encode(), addr)
@@ -94,10 +93,8 @@ class Server:
                     for client_addr in clients:
                         self.server_socket.sendto(message, client_addr)
 
-# Initialize server instance
 chat_server = Server(server_socket)
 
-# Start threads for receiving and broadcasting messages
 t1 = threading.Thread(target=chat_server.receive)
 t2 = threading.Thread(target=chat_server.broadcast)
 
