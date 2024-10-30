@@ -1,1 +1,1 @@
-cara menggunakan (tinggal pake)weihnfawbiuwfsfsdfadssadsad
+cara menggunakan (tinggal pake)
